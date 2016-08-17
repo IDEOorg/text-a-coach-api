@@ -10,45 +10,45 @@
 date_default_timezone_set('America/New_York');
 
 // General
-$projectName="WonkaBot";
-$projectEmail="serakoo@ideo.com";
-$projectPhoneNumber="+1 (646) 679-2903";
+$projectName="TextACoach";
+$projectEmail="madelin@ideo.org";
+$projectPhoneNumber="+1 (209) 662-6224";
 
 
 // Twilio API credentials
-$accountSid = "AC13acf8a755811c0a37b12cc9b2b781f5";
-$authToken = "c862f1cea91fb5c6fd5df07b29979951"; //
-$twilioPhoneNumber = "+16466792903";
-$siteURL="http://wonkabot.herokuapp.com/";
+$accountSid = "ACd5aecfa7e1f8d379387c4c2e7d51eaba";
+$authToken = "137989e7059f56775039284b18118630"; //
+$twilioPhoneNumber = "+12096626224";
+$siteURL="http://pure-headland-50794.herokuapp.com/";
 
 
 // Slack Webhook integration
-$slackWebHookURL="https://hooks.slack.com/services/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";          
-$slackRoom = "zikabot-test"; 
-$slackBotName = "zika-zika-bot";
-$slackBotIcon = ":poop:"; 
+$slackWebHookURL="https://hooks.slack.com/services/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";
+$slackRoom = "text-a-coach";
+$slackBotName = "jena-bot";
+$slackBotIcon = ":money_mouth_face:";
 
 
 // Database Stuff
 $dbHost = "us-iron-auto-dca-04-a.cleardb.net";
-$dbName = "heroku_24d47aa355dba14";
-$dbUserName = "b2f9885404a7a3";
-$dbPassword = "4a6cdeea";
-$dbTable = "wonkabot";
+$dbName = "heroku_ac4117cf4215510";
+$dbUserName = "be101ec348476f";
+$dbPassword = "eb96df18";
+$dbTable = "pure-headland-50794";
 
 $dbConnection = mysqli_connect($dbHost, $dbUserName, $dbPassword,$dbName);
-mysqli_error($dbConnection); 
+mysqli_error($dbConnection);
 
 
 // users' phone numbers (including participants)
 $contactsList = array(
-    "+17144692093"=>"Sera" // Sera Koo IDEO
+    "+12177664181"=>"Madelin" // Madelin Woods IDEO.org
 );
 
 
 // IDEO team phone numbers (ONLY team members who should be getting alerts)
 $IDEOersPhoneList = array(
-    "+17144692093"=>"Sera" // Sera Koo IDEO    
+    "+12177664181"=>"Madelin" // Madelin Woods IDEO.org
 );
 
 
