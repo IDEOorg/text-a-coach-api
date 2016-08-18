@@ -1,10 +1,10 @@
 <?php
 // response.php
 
-require('includes/Twilio.php');
-include('config/config.php');
-include('includes/functions.php');
-include('config/messages.php');
+require('../includes/Twilio.php');
+include('../config/config.php');
+include('../includes/functions.php');
+include('../config/messages.php');
 
 /*
 $counter = $_SESSION['counter'];
@@ -31,7 +31,7 @@ if($automatedResponse=="yes"){
 
 
 // Formatting elements for the notifications
-$conversationURL=$siteURL."/conversation.php?no=".urlencode($fromNumber);
+$conversationURL=$siteURL."/actions/conversation.php?no=".urlencode($fromNumber);
 $slackMessage=" ".$conversationURL;
 
 

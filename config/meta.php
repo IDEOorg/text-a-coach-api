@@ -8,7 +8,7 @@
 	<meta name="robots" content="noindex, nofollow">
 
 	<!-- Fonts-->
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>  
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 
 	<!-- Styles-->
-	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="../assets/css/main.css">

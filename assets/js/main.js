@@ -29,7 +29,7 @@ $( "#newConvoBtn" ).click(function() { // start conversation with new number
   $('#newConvo').removeClass('error');
   var phoneNumber=$('#newConvo').val();
   if(validatePhoneNumber(phoneNumber)){
-  	location.href='conversation.php?no='+phoneNumber;
+  	location.href='actions/conversation.php?no='+phoneNumber;
   }
   else{
   	$('#newConvo').addClass('error');

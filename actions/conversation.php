@@ -1,10 +1,10 @@
 <?php
 // conversation.php
 
-require('includes/Twilio.php');
-include('config/config.php');
-include('includes/functions.php');
-include('config/messages.php');
+require('../includes/Twilio.php');
+include('../config/config.php');
+include('../includes/functions.php');
+include('../config/messages.php');
 
 //check that a number is provided in querystring
 if($_GET['no']=="") die("No access");
@@ -52,7 +52,7 @@ if($_GET['mode']=="filter"){ // assign tag to conversation
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<?php include('config/meta.php');?>
+<?php include('../config/meta.php');?>
 </head>
 
 <body>
@@ -172,8 +172,8 @@ if($_GET['mode']=="filter"){ // assign tag to conversation
 
 
 <!--Scripts-->
-<script src="assets/js/jquery-2.1.3.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="../assets/js/jquery-2.1.3.js"></script>
+<script src="../assets/js/main.js"></script>
 <script>
 
 var fromNumber="<?php echo $fromNumber?>";

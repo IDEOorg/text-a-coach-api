@@ -67,13 +67,13 @@ if($_GET['mode']=="mark"){
 
         <?php
         // List of all the conversation participants
-        
+
        foreach ($smsMessages as $sms) {
           $html="";
           $flag=checkReadConversation($sms['from']); // check conversation is read / unread
           $thisFilter=getConversationFilter($sms['from']);
           $html.="\n<section class=\"conversation\">";
-          $html.= "\n\t<p class=\"bold\"><a href=\"conversation.php?no=".urlencode($sms['from'])."\">".formatAnonymousPhoneNumber($sms['from'])."</a></p>";
+          $html.= "\n\t<p class=\"bold\"><a href=\"actions/conversation.php?no=".urlencode($sms['from'])."\">".formatAnonymousPhoneNumber($sms['from'])."</a></p>";
 
           if(!strpos($sms['body'],"#servicemsg")){
         		if($flag=="unread") $html.="\n\t<p class=\"text bold\">".shortenText($sms['body'],120)."</p>";
