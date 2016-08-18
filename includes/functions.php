@@ -192,8 +192,10 @@ function getConversationFilter($phoneNumber){ // check read / unread conversatio
     global $dbConnection, $dbTable;
 
     $qSelect = "SELECT label FROM ".$dbTable." WHERE phonenumber='$phoneNumber';";
-    $r = mysqli_query($dbConnection, $qSelect); 
-    $obj = $r->fetch_object();
+    $r = mysqli_query($dbConnection, $qSelect);
+    if ($r) {
+      $obj = $r->fetch_object();
+    }
     return $obj->label;
 
 }
