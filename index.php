@@ -2,9 +2,9 @@
 // index.php
 
 require('includes/Twilio.php');
-include('includes/config.php');
+include('config/config.php');
 include('includes/functions.php');
-include('includes/messages.php');
+include('config/messages.php');
 
 // get all contacts and...
 $smsMessages=array();
@@ -106,8 +106,8 @@ if($_GET['mode']=="mark"){
 
 
 <!--Scripts-->
-<script src="js/jquery-2.1.3.js"></script>
-<script src="js/main.js"></script>
+<script src="assets/js/jquery-2.1.3.js"></script>
+<script src="assets/js/main.js"></script>
 
 </body>
 </html>

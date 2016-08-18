@@ -2,9 +2,9 @@
 // conversation.php
 
 require('includes/Twilio.php');
-include('includes/config.php');
+include('config/config.php');
 include('includes/functions.php');
-include('includes/messages.php');
+include('config/messages.php');
 
 //check that a number is provided in querystring
 if($_GET['no']=="") die("No access");
@@ -172,8 +172,8 @@ if($_GET['mode']=="filter"){ // assign tag to conversation
 
 
 <!--Scripts-->
-<script src="js/jquery-2.1.3.js"></script>
-<script src="js/main.js"></script>
+<script src="assets/js/jquery-2.1.3.js"></script>
+<script src="assets/js/main.js"></script>
 <script>
 
 var fromNumber="<?php echo $fromNumber?>";

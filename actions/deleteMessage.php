@@ -2,7 +2,7 @@
 //deleteMessage.php
 
 require('includes/Twilio.php');
-include('includes/config.php');
+include('config/config.php');
 include('includes/functions.php');
 
 $smsId=$_GET['smsid'];
@@ -74,8 +74,8 @@ $mode=$_GET['mode'];
   ?>
 </section>
 
-<script src="js/jquery-2.1.3.js"></script>
-<script src="js/main.js"></script>
+<script src="assets/js/jquery-2.1.3.js"></script>
+<script src="assets/js/main.js"></script>
 
 </body>
 </html>
