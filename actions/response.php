@@ -26,7 +26,7 @@ if(($fromNumber=="")||($fromNumber==$twilioPhoneNumber)) die("Phone number not v
 
 // Formatting elements for the notifications
 $conversationURL=$siteURL."/actions/conversation.php?no=".urlencode($fromNumber);
-$slackMessage=" @channel ".$conversationURL;
+$slackMessage=" <!channel> ".$conversationURL;
 
 
 $data = "payload=" . json_encode(array(
