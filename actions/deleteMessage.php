@@ -21,7 +21,7 @@ $mode=$_GET['mode'];
 <body>
 <header class="header">
   <div class="bold" style="display:inline-block;">
-    <span><a href="index.php">Project <?php echo $projectName; ?></a></span>
+    <span><a href="../index.php">Project <?php echo $projectName; ?></a></span>
   </div>
   <?php
   // delete all buttons

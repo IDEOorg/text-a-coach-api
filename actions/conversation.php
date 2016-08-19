@@ -59,7 +59,7 @@ if($_GET['mode']=="filter"){ // assign tag to conversation
 
 <header class="header">
   <div class="left bold">
-    <a href="index.php" class="btnBorder headerElements">Back</a>
+    <a href="../index.php" class="btnBorder headerElements">Back</a>
   </div>
   <div>
     <p class="bold">Project <?php echo $projectName; ?> / <?php echo $projectPhoneNumber; ?></p>
@@ -80,7 +80,7 @@ if($_GET['mode']=="filter"){ // assign tag to conversation
         </label>
       </div>
       <div class="right unread">
-        <a href="index.php?mode=mark&no=<?php echo urlencode($fromNumber);?>">Mark as unread?</a>
+        <a href="../index.php?mode=mark&no=<?php echo urlencode($fromNumber);?>">Mark as unread?</a>
       </div>
     </div>
 
