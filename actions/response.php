@@ -62,7 +62,7 @@ foreach ($client->account->messages as $sms) {
 	if($fromNumber==$sms->from) $counter++;
 }
 
-if($counter==0)
+if($counter==0) {
 	$sms = $client->account->messages->sendMessage(
 	    $twilioPhoneNumber,
         $fromNumber,
