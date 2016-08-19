@@ -32,7 +32,7 @@ if($automatedResponse=="yes"){
 
 // Formatting elements for the notifications
 $conversationURL=$siteURL."/actions/conversation.php?no=".urlencode($fromNumber);
-$slackMessage=" ".$conversationURL;
+$slackMessage=" @channel ".$conversationURL;
 
 
 $data = "payload=" . json_encode(array(         
