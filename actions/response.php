@@ -10,6 +10,7 @@ $counter = $_SESSION['counter'];
 if(!strlen($counter)) $counter = 0;
 
 $fromNumber=$_REQUEST['From'];
+$messageBody=$_REQUEST['Body'];
 if(($fromNumber=="")||($fromNumber==$twilioPhoneNumber)) die("Phone number not valid");
 
 
@@ -26,7 +27,7 @@ if(($fromNumber=="")||($fromNumber==$twilioPhoneNumber)) die("Phone number not v
 
 // Formatting elements for the notifications
 $conversationURL=$siteURL."/actions/conversation.php?no=".urlencode($fromNumber);
-$slackMessage=" <!channel> ".$conversationURL;
+$slackMessage=' <!channel>: "'.$messageBody.'" - <'.$conversationURL.'|View conversation>';
 
 
 $data = "payload=" . json_encode(array(
