@@ -2,7 +2,9 @@
     "name": "Project Buoyant",
     "description": "SMS App for Project Buoyant",
     "require": {
-        "php": ">=5.3.0",
-        "heroku/heroku-buildpack-php": "^113.0"
-     }
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+    	"heroku/heroku-buildpack-php": "^113.0"
+    }
 }
