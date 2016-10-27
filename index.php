@@ -40,7 +40,7 @@ if($_GET['mode']=="mark"){
 <body>
 
 <header class="header">
-	<p class="bold">Project <?php echo $projectName; ?> / <?php echo $projectPhoneNumber; ?></p>
+	<p class="bold">Project <?php echo $projectName; ?> / <?php echo $projectPhoneNumber; ?> / <a href="/logout.php">Logout</a></p>
 </header>
 
 <section class="wrapper">
