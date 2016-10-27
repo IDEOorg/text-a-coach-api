@@ -1,6 +1,11 @@
 <?php
 //deleteMessage.php
 
+// Require admin users to be logged in
+include('includes/sessions.php');
+if (!Sessions::requireAuth()) die();
+
+
 require('../includes/Twilio.php');
 include('../config/config.php');
 include('../includes/functions.php');

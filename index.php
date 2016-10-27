@@ -1,6 +1,11 @@
 <?php
 // index.php
 
+// Require admin users to be logged in
+include('includes/sessions.php');
+if (!Sessions::requireAuth()) die();
+
+
 require('includes/Twilio.php');
 include('config/config.php');
 include('includes/functions.php');
@@ -35,7 +40,7 @@ if($_GET['mode']=="mark"){
 <body>
 
 <header class="header">
-	<p class="bold">Project <?php echo $projectName; ?> / <?php echo $projectPhoneNumber; ?></p>
+	<p class="bold">Project <?php echo $projectName; ?> / <?php echo $projectPhoneNumber; ?> / <a href="/logout.php">Logout</a></p>
 </header>
 
 <section class="wrapper">
