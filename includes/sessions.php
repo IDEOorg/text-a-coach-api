@@ -30,7 +30,7 @@ class Sessions {
     if (self::isLoggedIn()) {
       return true;
     } else {
-      $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+      $_SESSION['redirect_url'] = '/' . ltrim($_SERVER['REQUEST_URI'], '/'); // Turn a "//" at the beginning of a URL into a valid "/"
       header("Location: /login.php");
       return false;
     }
