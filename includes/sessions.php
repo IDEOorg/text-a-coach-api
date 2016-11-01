@@ -30,6 +30,7 @@ class Sessions {
     if (self::isLoggedIn()) {
       return true;
     } else {
+      $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
       header("Location: /login.php");
       return false;
     }

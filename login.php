@@ -5,7 +5,13 @@ include('includes/sessions.php');
 
 if ($_POST && count($_POST) > 0) {
     if (Sessions::login($_POST['username'], $_POST['password'])) {
-        header("Location: /index.php");
+        if (isset($_SESSION['redirect_url']) && $_SESSION['redirect_url']) {
+            $redirect_url = $_SESSION['redirect_url'];
+        } else {
+            $redirect_url = '/index.php';
+        }
+        $_SESSION['redirect_url'] = null;
+        header("Location: " . $redirect_url);
     } else {
         Sessions::setMessage("error", "No account found.");
         header("Location: /login.php");
