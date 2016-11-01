@@ -2,7 +2,7 @@
 // conversation.php
 
 // Require admin users to be logged in
-include('includes/sessions.php');
+include('../includes/sessions.php');
 if (!Sessions::requireAuth()) die();
 
 
