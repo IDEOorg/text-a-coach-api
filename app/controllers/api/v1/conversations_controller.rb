@@ -1,7 +1,7 @@
 class Api::V1::ConversationsController < Api::V1::BaseController
   serialization_scope :view_context
 
-  before_action :related_platform, only: [:index]
+  before_action :related_platform, only: [:index, :search]
   before_action :find_conversation, only: [:show]
 
   # GET /conversations/:id.json
@@ -11,7 +11,13 @@ class Api::V1::ConversationsController < Api::V1::BaseController
 
   # GET /conversations.json
   def index
-    render json: @platform.conversations.paginate(:page => params[:page] || 1)
+    render json: @platform.conversations.filter(filter_params).paginate(:page => params[:page] || 1)
+  end
+
+  # GET /conversations.json
+  def search
+    query = params[:query].present? ? params[:query] : "a"
+    render json: @platform.conversations.filter(filter_params).search_by_topic(query).paginate(:page => params[:page] || 1)
   end
 
   private
@@ -25,6 +31,15 @@ class Api::V1::ConversationsController < Api::V1::BaseController
 
   def related_platform
     @platform = Platform.find(params[:platform_id])
+  end
+
+  def filter_params
+    params.permit [
+      :platform_id,
+      :agent_id,
+      :user_id,
+      :tag
+    ]
   end
 
   def conversation_params

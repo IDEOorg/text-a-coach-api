@@ -10,7 +10,11 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      resources :conversations
+      resources :conversations do
+        collection do
+          get 'search' => 'conversations#search'
+        end
+      end
     end
   end
 

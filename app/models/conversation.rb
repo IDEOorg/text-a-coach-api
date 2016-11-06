@@ -1,6 +1,12 @@
 class Conversation < ActiveRecord::Base
   include PgSearch
-  pg_search_scope :search_by_topic, :against => [:summary_question, :summary_answer, :tag_list]
+  include Filterable
+
+  pg_search_scope :search_by_topic,
+    :against => [:summary_question, :summary_answer],
+    :using => {
+      :tsearch => {:prefix => true}
+    }
 
   self.per_page = 100
 
@@ -20,4 +26,11 @@ class Conversation < ActiveRecord::Base
 
   validates :user,
     presence: true
+
+  # Scopes used for searching
+  scope :platform_id, -> (platform_id) { where platform_id: platform_id }
+  scope :agent_id, -> (agent_id) { where agent_id: agent_id }
+  scope :user_id, -> (user_id) { where user_id: user_id }
+  scope :tag, -> (tag) { tagged_with tag, any: true }
+
 end
