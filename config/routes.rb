@@ -6,12 +6,10 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
+  get 'ping' => 'welcome#ping'
 
   namespace :api, defaults: { format: 'json' } do
-
     namespace :v1 do
-      get 'ping' => 'ping#index'
-
       resources :conversations
     end
   end
