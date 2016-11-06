@@ -47,3 +47,5 @@ platform2.conversations.where(summary_question: "How much should I contribute to
   last_message_at: Date.today - 5.days,
   tag_list: "retirement, 401k, saving"
 })
+
+AdminUser.where(email: 'textacoach@ideo.com').first_or_create({password: ENV['ADMIN_PASS'] || "demo123", password_confirmation: ENV['ADMIN_PASS'] || "demo123"})
