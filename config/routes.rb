@@ -15,6 +15,7 @@ Rails.application.routes.draw do
           get 'search' => 'conversations#search'
         end
       end
+      resources :messages
     end
   end
 
