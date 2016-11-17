@@ -33,4 +33,8 @@ class Conversation < ActiveRecord::Base
   scope :user_id, -> (user_id) { where user_id: user_id }
   scope :tag, -> (tag) { tagged_with tag, any: true }
 
+  def teaser_answer
+    self.summary_answer.truncate(120, separator: /\s/)
+  end
+
 end
