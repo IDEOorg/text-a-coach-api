@@ -1,15 +1,15 @@
 ActiveAdmin.register Conversation do
-  belongs_to :platform, optional: true
-  # navigation_menu :platform
+  belongs_to :flavor, optional: true
+  # navigation_menu :flavor
 
-  includes :platform, :agent, :user
+  includes :flavor, :agent, :user
 
-  permit_params :platform_id, :agent_id, :user_id, :summary_question, :summary_answer, :tag_list, :last_message_at
+  permit_params :flavor_id, :agent_id, :user_id, :summary_question, :summary_answer, :tag_list, :last_message_at
 
   index do
     selectable_column
     id_column
-    column :platform
+    column :flavor
     column :agent
     column :user
     column :summary_question
@@ -17,7 +17,7 @@ ActiveAdmin.register Conversation do
     actions
   end
 
-  filter :platform
+  filter :flavor
   filter :agent
   filter :user
   filter :created_at
@@ -25,7 +25,7 @@ ActiveAdmin.register Conversation do
   form do |f|
     f.semantic_errors
     f.inputs "Conversation Details" do
-      f.input :platform
+      f.input :flavor
       f.input :agent
       f.input :user
       f.input :summary_question
@@ -47,7 +47,7 @@ ActiveAdmin.register Conversation do
   show do
     attributes_table do
       row :id
-      row :platform
+      row :flavor
       row :agent
       row :user
       row :summary_question
