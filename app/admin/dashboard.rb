@@ -7,8 +7,8 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Conversations for" do
           ul do
-            Platform.order(:name).map do |platform|
-              li link_to(platform.name, admin_platform_conversations_path(platform))
+            Flavor.order(:name).map do |flavor|
+              li link_to(flavor.name, admin_flavor_conversations_path(flavor))
             end
           end
         end
