@@ -63,4 +63,6 @@ end
 group :production do
   # logs directed to stdout and dev/prod parity while delivering assets
   gem 'rails_12factor'
+  gem 'exception_notification'
+  gem 'slack-notifier'
 end
