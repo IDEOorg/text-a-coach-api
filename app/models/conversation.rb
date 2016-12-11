@@ -13,12 +13,13 @@ class Conversation < ActiveRecord::Base
   acts_as_taggable
 
   belongs_to :platform, inverse_of: :conversations
+  belongs_to :flavor, inverse_of: :conversations
   belongs_to :user, inverse_of: :conversations
   belongs_to :agent, inverse_of: :conversations
   has_many :messages, inverse_of: :conversation, dependent: :destroy
 
   # Validation rules
-  validates :platform,
+  validates :flavor,
     presence: true
 
   validates :agent,
@@ -28,7 +29,7 @@ class Conversation < ActiveRecord::Base
     presence: true
 
   # Scopes used for searching
-  scope :platform_id, -> (platform_id) { where platform_id: platform_id }
+  scope :flavor_id, -> (flavor_id) { where flavor_id: flavor_id }
   scope :agent_id, -> (agent_id) { where agent_id: agent_id }
   scope :user_id, -> (user_id) { where user_id: user_id }
   scope :tag, -> (tag) { tagged_with tag, any: true }
