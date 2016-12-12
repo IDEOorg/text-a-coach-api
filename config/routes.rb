@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
+      post 'webhooks/smooch' => 'webhooks#smooch'
       resources :conversations do
         collection do
           get 'search' => 'conversations#search'

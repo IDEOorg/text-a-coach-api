@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212062828) do
+ActiveRecord::Schema.define(version: 20161212064740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20161212062828) do
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "handle"
   end
 
   create_table "messages", id: :bigserial, force: :cascade do |t|
@@ -81,6 +82,18 @@ ActiveRecord::Schema.define(version: 20161212062828) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
+
+  create_table "smooch_users", id: :bigserial, force: :cascade do |t|
+    t.integer  "flavor_id"
+    t.string   "phone_number"
+    t.string   "smooch_id"
+    t.datetime "seen_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "smooch_users", ["phone_number"], name: "index_smooch_users_on_phone_number", using: :btree
+  add_index "smooch_users", ["smooch_id"], name: "index_smooch_users_on_smooch_id", using: :btree
 
   create_table "taggings", id: :bigserial, force: :cascade do |t|
     t.integer  "tag_id"
