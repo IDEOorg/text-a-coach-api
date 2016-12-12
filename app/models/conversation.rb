@@ -12,7 +12,6 @@ class Conversation < ActiveRecord::Base
 
   acts_as_taggable
 
-  belongs_to :platform, inverse_of: :conversations
   belongs_to :flavor, inverse_of: :conversations
   belongs_to :user, inverse_of: :conversations
   belongs_to :agent, inverse_of: :conversations
