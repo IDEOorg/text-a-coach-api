@@ -4,6 +4,9 @@ class Conversation < ActiveRecord::Base
 
   pg_search_scope :search_by_topic,
     :against => [:summary_question, :summary_answer],
+    :associated_against => {
+      :tags => [:name]
+    },
     :using => {
       :tsearch => {:prefix => true}
     }
