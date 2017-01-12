@@ -10,6 +10,6 @@ class Flavor < ActiveRecord::Base
 
   # letters-only all caps
   validates_format_of :handle,
-	  with: /\A[A-Z_]+\z/,
-	  message: "All caps letters with underscores"
+	  with: /\A[A-Z0-9_]+\z/,
+	  message: "All caps letters with numbers and underscores"
 end
