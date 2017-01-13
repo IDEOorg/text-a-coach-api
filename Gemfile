@@ -51,6 +51,9 @@ gem 'devise', '~> 4.2'
 gem 'jwt'
 gem 'httparty', '~> 0.14'
 
+# Mixpanel
+gem 'mixpanel-ruby', '~> 2.2.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
