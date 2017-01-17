@@ -18,6 +18,7 @@ class Api::V1::WebhooksController < Api::V1::BaseController
         smooch_id: params[:appUser][:_id],
         phone_number: @device[:info][:phoneNumber]
       ).first_or_create
+      @last_seen_at = @user.seen_at
       @user.update_attribute :seen_at, Time.now
 
       # Log mixpanel event for messages received
@@ -25,6 +26,44 @@ class Api::V1::WebhooksController < Api::V1::BaseController
         tracker.track(@user.id, 'Sent Message', {
           'Flavor' => @flavor.handle
         })
+      end
+
+      if OfficeHours.is_open
+        if @last_seen_at && (Time.now - @last_seen_at) > 12.hours
+          # OPEN and more than 12 hours since last message
+          @client.send_message(
+            @user.smooch_id,
+            "Good to hear from you again. We're finding a #{@flavor.name} coach for you. It may be just a short wait."
+          )
+        elsif @last_seen_at.nil?
+          # OPEN new user message
+          @client.send_message(
+            @user.smooch_id,
+            "Welcome to #{@flavor.name}! We're finding the next available coach. It may be just a short wait."
+          )
+          @client.send_message(
+            @user.smooch_id,
+            "Text STOP anytime to cancel. Please see our terms of service at #{@flavor.terms_url}"
+          )
+        end
+      else
+        if @last_seen_at.nil?
+          # CLOSED new user after hours message
+          @client.send_message(
+            @user.smooch_id,
+            "Welcome to #{@flavor.name}! Our coaches are online weekdays 9am-5pm EST. We'll get back to you as soon as we can."
+          )
+          @client.send_message(
+            @user.smooch_id,
+            "Text STOP anytime to cancel. Please see our terms of service at #{@flavor.terms_url}"
+          )
+        else
+          # CLOSED existing user after hours message
+          @client.send_message(
+            @user.smooch_id,
+            "Good to hear from you again. #{@flavor.name} coaches are online weekdays 9am-5pm EST. We'll get back to you as soon as we can!"
+          )
+        end
       end
 
       @msg = params[:messages].try(:first) || {}

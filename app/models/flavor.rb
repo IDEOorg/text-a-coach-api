@@ -2,7 +2,11 @@ class Flavor < ActiveRecord::Base
   has_many :conversations, inverse_of: :flavor, dependent: :destroy
 
   # Validation rules
-  validates :name,
+  validates :name, #used for autoresponders
+    length: {maximum: 30},
+    presence: true
+
+  validates :terms_url, #used for autoresponders
     presence: true
 
   validates :handle, #used for ENV variable names

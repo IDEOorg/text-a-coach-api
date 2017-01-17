@@ -1,7 +1,16 @@
 ActiveAdmin.register Flavor do
   menu false
 
-  permit_params :name, :handle
+  index do
+    selectable_column
+    id_column
+    column :name
+    column :handle
+    column :created_at
+    actions
+  end
+
+  permit_params :name, :handle, :terms_url
 
   sidebar "Flavor Contents", only: [:show, :edit] do
     ul do

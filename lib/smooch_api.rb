@@ -8,20 +8,19 @@ module SmoochAPI
     end
 
     def validateWebhook(request)
-      begin
-        token = request.headers['X-API-Key'.freeze]
-        flavor = nil
-        Flavor.all.each do |f|
-          if ENV["FLAVOR_#{f.handle}_WEBHOOK"] === token
-            flavor = f
-            break
-          end
+      token = request.headers['X-API-Key'.freeze]
+      flavor = nil
+      Flavor.all.each do |f|
+        if ENV["FLAVOR_#{f.handle}_WEBHOOK"] === token
+          flavor = f
+          break
         end
-      rescue StandardError => e
-        flavor = nil
       end
-      return flavor unless flavor.nil?
-      raise "Invalid Webhook payload"
+      if flavor.nil?
+        raise "Invalid Webhook payload"
+      else
+        return flavor
+      end
     end
 
     # def createResponseObject(response_data)
@@ -126,6 +125,22 @@ module SmoochAPI
       #   end
       # end
       # return output
+    end
+
+    def user_event(user_id, event_name)
+      data = self.request "/appusers/#{user_id}/events", :post, {
+        name: event_name
+      }
+      return data
+    end
+
+    def send_message(user_id, message)
+      data = self.request "/appusers/#{user_id}/messages", :post, {
+        role: "appMaker",
+        type: "text",
+        text: message
+      }
+      return data
     end
 
   end
