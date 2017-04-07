@@ -1,5 +1,3 @@
-require 'mixpanel-ruby'
-
 class Api::V1::WebhooksController < Api::V1::BaseController
   serialization_scope :view_context
 
@@ -9,8 +7,6 @@ class Api::V1::WebhooksController < Api::V1::BaseController
     @client = SmoochAPI::client @flavor
     # logger.info params.inspect
     begin
-      tracker = Mixpanel::Tracker.new(ENV["MIXPANEL_TOKEN"])
-
       # logger.info params[:messages].inspect
       @device = params[:appUser][:devices].find{|d| d[:platform] === "twilio"}
       @user = SmoochUser.where(
@@ -20,13 +16,6 @@ class Api::V1::WebhooksController < Api::V1::BaseController
       ).first_or_create
       @last_seen_at = @user.seen_at
       @user.update_attribute :seen_at, Time.now
-
-      # Log mixpanel event for messages received
-      if params[:trigger] == "message:appUser"
-        tracker.track(@user.id, 'Sent Message', {
-          'Flavor' => @flavor.handle
-        })
-      end
 
       if OfficeHours.is_open
         if @last_seen_at && (Time.now - @last_seen_at) > 12.hours
