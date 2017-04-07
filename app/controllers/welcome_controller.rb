@@ -4,8 +4,4 @@ class WelcomeController < ApplicationController
     render nothing: true
   end
 
-  def ping
-    render text: "pong"
-  end
-
 end

@@ -16,17 +16,15 @@ class Api::V1::ConversationsController < Api::V1::BaseController
 
   # GET /conversations.json
   def search
-    query = params[:query].present? ? params[:query] : "a"
-    render json: @flavor.conversations.filter(filter_params).search_by_topic(query).paginate(:page => params[:page] || 1)
+    base_query = @flavor.conversations.filter(filter_params)
+    base_query = base_query.search_by_topic(params[:query]) if params[:query].present?
+    render json: base_query.paginate(:page => params[:page] || 1)
   end
 
   private
 
   def find_conversation
     @conversation = Conversation.find params[:id]
-    if @conversation.nil?
-      return forbid!
-    end
   end
 
   def related_flavor
@@ -39,17 +37,6 @@ class Api::V1::ConversationsController < Api::V1::BaseController
       :agent_id,
       :user_id,
       :tag
-    ]
-  end
-
-  def conversation_params
-    params.permit [
-      :flavor_id,
-      :agent_id,
-      :user_id,
-      :summary_question,
-      :summary_answer,
-      :last_message_at
     ]
   end
 end
