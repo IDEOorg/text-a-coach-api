@@ -22,10 +22,6 @@ module SmoochAPI
         return flavor
       end
     end
-
-    # def createResponseObject(response_data)
-    #   return SmoochAPI::Response.new(response_data)
-    # end
   end
 
   class Client
@@ -110,21 +106,6 @@ module SmoochAPI
       data = self.request '/appusers', :post, { userId: "+18183503510" }
       puts data.inspect
       return data
-      # output = []
-      # if data && data["meta"]["status"] == "Success"
-      #   data["result"].each do |survey_data|
-      #     output << QualtricsV3Service::Survey.new(survey_data)
-      #   end
-      # end
-      # output.sort! do |left, right|
-      #   compare = left.status <=> right.status
-      #   if compare != 0
-      #     compare
-      #   else
-      #     left.name <=> right.name
-      #   end
-      # end
-      # return output
     end
 
     def user_event(user_id, event_name)
