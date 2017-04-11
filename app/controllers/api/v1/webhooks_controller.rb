@@ -3,14 +3,15 @@ class Api::V1::WebhooksController < Api::V1::BaseController
 
   # POST /smooch.json
   def smooch
-    @flavor = SmoochAPI::validateWebhook request
-    @client = SmoochAPI::client @flavor
-    # logger.info params.inspect
+    unless SmoochAPI::validateWebhook request
+      render status: 403 and return
+    end
+
+    @client = SmoochAPI::Client.new
+
     begin
-      # logger.info params[:messages].inspect
       @device = params[:appUser][:devices].find{|d| d[:platform] === "twilio"}
       @user = SmoochUser.where(
-        flavor_id: @flavor.id,
         smooch_id: params[:appUser][:_id],
         phone_number: @device[:info][:phoneNumber]
       ).first_or_create
@@ -22,17 +23,17 @@ class Api::V1::WebhooksController < Api::V1::BaseController
           # OPEN and more than 12 hours since last message
           @client.send_message(
             @user.smooch_id,
-            "Good to hear from you again. We're finding a #{@flavor.name} coach for you. It may be just a short wait."
+            "Good to hear from you again. We're finding a Text A Coach coach for you. It may be just a short wait."
           )
         elsif @last_seen_at.nil?
           # OPEN new user message
           @client.send_message(
             @user.smooch_id,
-            "Welcome to #{@flavor.name}! We're finding the next available coach. It may be just a short wait."
+            "Welcome to Text A Coach! We're finding the next available coach. It may be just a short wait."
           )
           @client.send_message(
             @user.smooch_id,
-            "Text STOP anytime to cancel. Please see our terms of service at #{@flavor.terms_url}"
+            "Text STOP anytime to cancel. Please see our terms of service at http://bit.ly/2jfR9vU"
           )
         end
       else
@@ -40,23 +41,24 @@ class Api::V1::WebhooksController < Api::V1::BaseController
           # CLOSED new user after hours message
           @client.send_message(
             @user.smooch_id,
-            "Welcome to #{@flavor.name}! Our coaches are online weekdays 9am-5pm EST. We'll get back to you as soon as we can."
+            "Welcome to Text A Coach! Our coaches are online weekdays 9am-5pm EST. We'll get back to you as soon as we can."
           )
           @client.send_message(
             @user.smooch_id,
-            "Text STOP anytime to cancel. Please see our terms of service at #{@flavor.terms_url}"
+            "Text STOP anytime to cancel. Please see our terms of service at http://bit.ly/2jfR9vU"
           )
         else
           # CLOSED existing user after hours message
           @client.send_message(
             @user.smooch_id,
-            "Good to hear from you again. #{@flavor.name} coaches are online weekdays 9am-5pm EST. We'll get back to you as soon as we can!"
+            "Good to hear from you again. Text A Coach coaches are online weekdays 9am-5pm EST. We'll get back to you as soon as we can!"
           )
         end
       end
 
       @msg = params[:messages].try(:first) || {}
-      if @msg[:text] === 'eu396f59nf76inz82nj4'
+      if @msg[:text] === 'resetmyhistory'
+        # NOTE: This is a tool used to reset message history during QA
         @client.reset_user @msg[:authorId]
       end
     rescue StandardError => e

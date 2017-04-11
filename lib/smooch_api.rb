@@ -3,38 +3,24 @@ require 'jwt'
 module SmoochAPI
 
   class << self
-    def client(flavor)
-      return SmoochAPI::Client.new(flavor)
-    end
-
     def validateWebhook(request)
-      token = request.headers['X-API-Key'.freeze]
-      flavor = nil
-      Flavor.all.each do |f|
-        if ENV["FLAVOR_#{f.handle}_WEBHOOK"] === token
-          flavor = f
-          break
-        end
-      end
-      if flavor.nil?
+      unless request.headers['X-API-Key'] == ENV['SMOOCH_WEBHOOK_SECRET']
         raise "Invalid Webhook payload"
-      else
-        return flavor
       end
+      true
     end
   end
 
   class Client
 
-    def initialize(flavor)
-      @flavor = flavor
+    def initialize()
       @base_uri    = 'https://api.smooch.io/v1'
       @base_params = {
         scope: 'app'
       }
       @base_secrets = {
-        jwt_id: ENV["FLAVOR_#{@flavor.handle}_JWT_ID"],
-        jwt_secret: ENV["FLAVOR_#{@flavor.handle}_JWT_SECRET"]
+        jwt_id: ENV["SMOOCH_JWT_ID"],
+        jwt_secret: ENV["SMOOCH_JWT_SECRET"]
       }
     end
 
@@ -48,41 +34,18 @@ module SmoochAPI
 
       if method == :get
         http_options[:query] = params
-
-        token = JWT.encode http_options[:query],
-          @base_secrets[:jwt_secret],
-          'HS256',
-          {kid: @base_secrets[:jwt_id]}
-
-        http_options[:headers] = {
-          "authorization" => "Bearer #{token}"
-        }
+        token = JWT.encode http_options[:query], @base_secrets[:jwt_secret], 'HS256', {kid: @base_secrets[:jwt_id]}
+        http_options[:headers] = { "authorization" => "Bearer #{token}" }
         return HTTParty.get path, http_options
-
       elsif method == :post
         http_options[:body] = params
-
-        token = JWT.encode http_options[:body],
-          @base_secrets[:jwt_secret],
-          'HS256',
-          {kid: @base_secrets[:jwt_id]}
-
-        http_options[:headers] = {
-          "authorization" => "Bearer #{token}"
-        }
+        token = JWT.encode http_options[:body], @base_secrets[:jwt_secret], 'HS256', {kid: @base_secrets[:jwt_id]}
+        http_options[:headers] = { "authorization" => "Bearer #{token}" }
         return HTTParty.post path, http_options
-
       elsif method == :delete
         http_options[:body] = params
-
-        token = JWT.encode http_options[:body],
-          @base_secrets[:jwt_secret],
-          'HS256',
-          {kid: @base_secrets[:jwt_id]}
-
-        http_options[:headers] = {
-          "authorization" => "Bearer #{token}"
-        }
+        token = JWT.encode http_options[:body], @base_secrets[:jwt_secret], 'HS256', {kid: @base_secrets[:jwt_id]}
+        http_options[:headers] = { "authorization" => "Bearer #{token}" }
         return HTTParty.delete path, http_options
       end
     end

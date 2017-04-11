@@ -1,7 +1,4 @@
 Flavor.create!([
-  {name: "DoubleCheck", handle: "DOUBLECHECK", terms_url: "http://bit.ly/2jfR9vU"},
-  {name: "The 99", handle: "THE99", terms_url: "http://bit.ly/2jgDhky"},
-  {name: "Pocket Squad", handle: "POCKETSQUAD", terms_url: "http://bit.ly/2jtx4Se"},
   {name: "Text A Coach", handle: "TEXTACOACH", terms_url: "http://bit.ly/2gfjm0f"}
 ])
 

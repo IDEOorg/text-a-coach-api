@@ -28,7 +28,11 @@ class Api::V1::ConversationsController < Api::V1::BaseController
   end
 
   def related_flavor
-    @flavor = Flavor.find(params[:flavor_id] || 1)
+    if params[:flavor_id].present?
+      @flavor = Flavor.find(params[:flavor_id])
+    else
+      @flavor = Flavor.first
+    end
   end
 
   def filter_params
