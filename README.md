@@ -30,7 +30,7 @@ bundle install
 rake db:setup
 ```
 
-### Twilio
+#### Twilio
 
 We use [Twilio](https://www.twilio.com) to send and receive SMS messages.
 
@@ -38,7 +38,7 @@ We use [Twilio](https://www.twilio.com) to send and receive SMS messages.
 - Create a [new number](https://www.twilio.com/console/phone-numbers/search)
 
 
-### Zendesk
+#### Zendesk
 
 We use [Zendesk](https://zendesk.com) to keep track of and respond to inquiries. Each question creates a support ticket, so the financial planners have an easier time keeping track of and responding to questions.
 
@@ -46,7 +46,7 @@ We use [Zendesk](https://zendesk.com) to keep track of and respond to inquiries.
 - Note your custom domain (https://my-domain.zendesk.com)
 
 
-### Smooch
+#### Smooch
 
 We use [Smooch](https://smooch.io/) to connect our SMS messaging with our Zendesk tickets and Webhook autoresponders.
 
@@ -55,16 +55,45 @@ We use [Smooch](https://smooch.io/) to connect our SMS messaging with our Zendes
 - Add the [Twilio SMS integration](https://app.smooch.io/integrations/twilio) and follow their steps for configuration
 - Add the [Zendesk integration](https://app.smooch.io/integrations/zendesk) and follow their steps for configuration
 
-### Test it out
+#### Test it out
 
 Congratulations! At this stage you should be able to send an SMS to your Twilio phone number, which should automatically create a Zendesk support ticket.
 
 Replies to the Zendesk support ticket will be sent back as an SMS!
 
 
-### Webhook
+#### Webhook
 
-TODO: Add instructions for "office hours" webhook responder.
+You can add an optional webhook from Smooch to our API which will enable autoresponders. These were set up to send automated "welcome" and "after hours" text messgaes to our participants.
+
+For information on the specific responses you can see our webhook controller in: `app/controllers/api/v1/webhooks_controller.rb`
+
+To set up the webhook:
+
+- Go to your Smooch App
+- Add the [Webhooks integration](https://app.smooch.io/integrations/webhook) with the following settings:
+```
+Target: https://mywebsite/api/v1/webhooks/smooch
+Trigger: message:appUser
+```
+- Grab the Webhook's `secret` token
+- Add the token as an environment variable in your `.env` file as:
+```
+SMOOCH_WEBHOOK_SECRET="secret goes here"
+```
+
+In order to test the autoresponders in different circumstances, we needed a way to reset our conversation history. We do this through Smooch's [REST API](https://docs.smooch.io/rest/#delete-user-profile) when we receive a message with the special code: `resetmyhistory`
+
+To enable this reset functionality, you'll need credentials for the API:
+
+- Go to your Smooch App
+- Go to the Settings tab
+- Scroll down to **Secret Keys**
+- Create a new key and add the credentials to your `.env` file as:
+```
+SMOOCH_JWT_ID="key id goes here"
+SMOOCH_JWT_SECRET="secret goes here"
+```
 
 
 ### Local Server
@@ -76,6 +105,13 @@ heroku local
 ```
 
 Your app will be running at http://localhost:3333/
+
+
+### Remote Server
+
+The app is designed to run easily on a Ruby [Heroku](https://www.heroku.com/) instance with the [Postgres add-on](https://www.heroku.com/postgres).
+
+You should be able to connect Heroku to your Github repository and do a [deploy](https://devcenter.heroku.com/articles/getting-started-with-ruby#deploy-the-app).
 
 
 ## Documentation
