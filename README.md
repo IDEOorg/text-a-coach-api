@@ -1,54 +1,99 @@
-# Text A Coach - API
+# Text A Coach API
 
-TODO: Brief project high-level description.
-What is it? What does it do? What can I do with it?
+Text A Coach is a tool provided by the Steps team at IDEO.org. It is part of a larger effort to design and build digital tools that can empower low-income communities in the U.S. to improve their financial futures. Read more about Steps at https://steps.ideo.org.
 
-## Background
+Text A Coach allows you to:
 
-TODO: Project objectives... How and why it came to be.
+* Receive SMS and Facebook messages from users and reply from a web portal
+* Provide a website that lets you show examples from the conversations you've had (screened for privacy information)
 
-## Quick Start
+This repository contains the code for the back end of the service website. You do not need this code to simply receive and respond to messages, though instructions for that are included below. This project builds on that functionality and adds an API to pull past conversations from the database to populate your website, an auto response that is sent to users after their first text, and support for metrics to let you measure usage.
+
+The frontend website template that compliments this project can be found at https://github.com/IDEOorg/text-a-coach-api
+
+We built three example brands to show how Text A Coach can be used:
+
+* [www.inthe99.com](http://www.inthe99.com)
+* [www.thedoublecheck.org](http://www.thedoublecheck.org)
+* [www.pocketsquad.org](http://www.pocketsquad.org)
+
+## How Messages Flow Through the Involved Services
+
+In order to receive and respond to messages a few services are involved. 
+
+Here are how real time SMS conversations flow:
+User's phone <-----> Twilio <----> Smooch.io <-----> This backend, Zendesk and Slack
+
+A facebook Messenger conversation is similar:
+Facebook Messenger <----> Smooch.io <-----> This backend, Zendesk and Slack
+
+Here is how data flows to the website
+Active Admin CMS ----> a Postgres SQL database ----> This backend ----> The frontend website
+
+We would like to automatically populate the CMS and database as users text, but that work has not been done.
+
+### The role of each service
+
+#### Twilio
+Twilio (twilio.com) lets you register a phone number to use for receiving and sending messages. They are an interface between the carriers and code of your choosing. Discounts are available for non-profits.
+
+#### Smooch
+
+While we could have our code work with Twilio directly, Smooch (www.smooch.io) makes it very easy to connect common message platforms with any service you'd like to answer those messages from. This can be done without code. You can receive messages from SMS and Facebook, as well as Twitter and WhatsApp. You can receieve them in popular platforms like Zendesk, Help Scout or even reply from Slack. 
+
+#### Zendesk
+
+Zendesk is a customer support portal. Companies usually use it to answer support requests from users about their product or service. Rather than re-implement a competitor ourselves we recommend it as a fully featured interface for conversing with users of your Text A Coach service. It lets you peruse all past conversations, triage them to difference coaches, and store common answers, among many other features. 
+
+You could use another customer support portal in place of Zendesk, or build your own. 
+
+#### Active Admin CMS
+
+This is a web interface that lets you edit the messages and conversations that you want to appear on your website. 
+
+
+## Getting Set Up
 
 ### Local Setup
 
 **Requirements**
 
-To get started, make sure you have the following tools installed and available:
+To get started, you will need to have the tools installed on your development machine:
 
 - [Ruby 2.3](https://www.ruby-lang.org/en/)
 - [PostgreSQL 9.4](https://www.postgresql.org/)
 - [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
-**Environment Variables**
-
-Take a look at the file `/.env.example`. Copy it into your project as `/.env` and change any values if necessary.
-
-**Setup Ruby & Database**
+**Get the Repository and Install Dependencies **
 ```
-cd /path/to/project
+git glone https://github.com/IDEOorg/text-a-coach-api.git
+cd text-a-coach-api
 bundle install
 rake db:setup
 ```
 
+**Environment Variables**
+
+The environment file contains all the keys and passwords that this backend needs to connect to the other services. Copy `/.env.example` into your project as `/.env` and change the values to your keys. 
+
 #### Twilio
 
-We use [Twilio](https://www.twilio.com) to send and receive SMS messages.
+We use [Twilio](https://www.twilio.com) to send and receive SMS messages. Visit their website to:
 
 - Create an account
-- Create a [new number](https://www.twilio.com/console/phone-numbers/search)
+- Create a [new phone number](https://www.twilio.com/console/phone-numbers/search)
 
 
 #### Zendesk
 
-We use [Zendesk](https://zendesk.com) to keep track of and respond to inquiries. Each question creates a support ticket, so the financial planners have an easier time keeping track of and responding to questions.
+We use [Zendesk](https://zendesk.com) to be notified of new messages and respond. It's an interface coaches can use to manage the conversations. Visit their website and:
 
 - Create an account
-- Note your custom domain (https://my-domain.zendesk.com)
-
+- Choose a custom domain (https://my-domain.zendesk.com)
 
 #### Smooch
 
-We use [Smooch](https://smooch.io/) to connect our SMS messaging with our Zendesk tickets and Webhook autoresponders.
+We use [Smooch](https://smooch.io/) as the glue between message sources, Zendesk and this backend. Visit their website to:
 
 - Create an account
 - Create a new App
@@ -60,7 +105,6 @@ We use [Smooch](https://smooch.io/) to connect our SMS messaging with our Zendes
 Congratulations! At this stage you should be able to send an SMS to your Twilio phone number, which should automatically create a Zendesk support ticket.
 
 Replies to the Zendesk support ticket will be sent back as an SMS!
-
 
 #### Webhook
 
@@ -95,19 +139,21 @@ SMOOCH_JWT_ID="key id goes here"
 SMOOCH_JWT_SECRET="secret goes here"
 ```
 
-
 ### Local Server
 
 **Run the Server**
+
+To run this service on your development machine:
+
 ```
-cd /path/to/project
+cd text-a-coach-api
 heroku local
 ```
 
 Your app will be running at http://localhost:3333/
 
 
-### Remote Server
+### Hosting this Service
 
 The app is designed to run easily on a Ruby [Heroku](https://www.heroku.com/) instance with the [Postgres add-on](https://www.heroku.com/postgres).
 
@@ -118,7 +164,7 @@ You should be able to connect Heroku to your Github repository and do a [deploy]
 
 ### API
 
-The purpose of this server is to provide a JSON API for our [Text A Coach](https://github.com/IDEOorg/text-a-coach) web app.
+This server provides a JSON API for our [Text A Coach](https://github.com/IDEOorg/text-a-coach) web app.
 
 #### Conversations
 
@@ -268,16 +314,23 @@ Pass: test123
 In this CMS you should be able to administer the `Conversations` that appear on your website.
 
 
+### Contribution and Submitting Bugs
+
+We welcome all contributions to this code base, as well as bug reports. To suggest a contribution please open a pull request against this repository. It is likely a good idea to get in touch before doing any work so we can coordinate. 
+
+Please submit any bug reports via Github issues. Click on the Issues tab at the top of this page. 
+
 ## About IDEO.ORG
 
-TODO: Who we are
+IDEO.org uses human-centered design to create products, services, and experiences that improve the lives of people living in poverty.
+
+We’re mission-driven designers who are looking to have as much impact as possible in the lives of the poor. It starts with getting to know the people we’re designing for. Without them, we wouldn’t know what to design, how it should work, or why it matters. From there we build, test, and iterate until we get it right. 
+
+To learn more please visit www.ideo.org
 
 ## Questions / Contact
 
-TODO: Where to send questions / concerns.
+To get in touch with us please use the form at https://steps.ideo.org/about/ and we'll get back to you quickly. 
 
-## License
-
-TODO: Make a selection
 
 © IDEO.ORG 2017
