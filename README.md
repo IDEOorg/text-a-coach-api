@@ -7,7 +7,7 @@ Text A Coach allows you to:
 * Receive SMS and Facebook messages from users and reply from a web portal
 * Provide a website that lets you show examples from the conversations you've had (screened for privacy information)
 
-This repository contains the code for the back end of the service website. You do not need this code to simply receive and respond to messages, though instructions for that are included below. This project builds on that functionality and adds an API to pull past conversations from the database to populate your website, an auto response that is sent to users after their first text, and support for metrics to let you measure usage.
+This repository contains the code for the backend of the service website. You do not need this code to simply receive and respond to messages, though instructions for that are included below. This project builds on that functionality and adds an API to pull past conversations from the database to populate your website, an auto response that is sent to users after their first text, and support for metrics to let you measure usage.
 
 The frontend website template that compliments this project can be found at https://github.com/IDEOorg/text-a-coach-api
 
@@ -19,7 +19,7 @@ We built three example brands to show how Text A Coach can be used:
 
 ## How Messages Flow Through the Involved Services
 
-In order to receive and respond to messages a few services are involved. 
+In order to receive and respond to messages a few services are involved. Setting up these services doesn't actually involve any code.
 
 Here are how real time SMS conversations flow:
 User's phone <-----> Twilio <----> Smooch.io <-----> This backend, Zendesk and Slack
@@ -32,14 +32,15 @@ Active Admin CMS ----> a Postgres SQL database ----> This backend ----> The fron
 
 We would like to automatically populate the CMS and database as users text, but that work has not been done.
 
-### The role of each service
+### The role of each service and how to set it up
 
 #### Twilio
 Twilio (twilio.com) lets you register a phone number to use for receiving and sending messages. They are an interface between the carriers and code of your choosing. Discounts are available for non-profits.
 
-#### Smooch
+Visit their website and:
 
-While we could have our code work with Twilio directly, Smooch (www.smooch.io) makes it very easy to connect common message platforms with any service you'd like to answer those messages from. This can be done without code. You can receive messages from SMS and Facebook, as well as Twitter and WhatsApp. You can receieve them in popular platforms like Zendesk, Help Scout or even reply from Slack. 
+- Create an account
+- Create a [new phone number](https://www.twilio.com/console/phone-numbers/getting-started)
 
 #### Zendesk
 
@@ -47,12 +48,34 @@ Zendesk is a customer support portal. Companies usually use it to answer support
 
 You could use another customer support portal in place of Zendesk, or build your own. 
 
+Visit their website and:
+
+- Create an account
+- Choose a custom domain (https://my-domain.zendesk.com)
+
+
+#### Smooch
+
+While we could have our code work with Twilio directly, Smooch (www.smooch.io) makes it very easy to connect common message platforms with any service you'd like to answer those messages from. This can be done without code. You can receive messages from SMS and Facebook, as well as Twitter and WhatsApp. You can receieve them in popular platforms like Zendesk, Help Scout or even reply from Slack. 
+
+Visit their website and:
+
+- Create an account
+- Create a new App
+- Add the [Twilio SMS integration](https://app.smooch.io/integrations/twilio) and follow their steps for configuration
+- Add the [Zendesk integration](https://app.smooch.io/integrations/zendesk) and follow their steps for configuration
+
+#### At this point you can test receiving and replying to messages
+
+Congratulations! At this stage you should be able to send an SMS to your Twilio phone number, which should automatically create a Zendesk support ticket. Replies to the Zendesk support ticket will be sent back as an SMS!
+
 #### Active Admin CMS
 
 This is a web interface that lets you edit the messages and conversations that you want to appear on your website. 
 
+## Getting the Code Set Up
 
-## Getting Set Up
+The code in this repository is not in the SMS to Zendesk pipeline. It does allow you to have an auto-reply if someone texts you for the first time, or the first time in a while. It's main functionality is to provide the conversation data if you choose to show it on a website.
 
 ### Local Setup
 
@@ -66,49 +89,19 @@ To get started, you will need to have the tools installed on your development ma
 
 **Get the Repository and Install Dependencies **
 ```
-git glone https://github.com/IDEOorg/text-a-coach-api.git
+git clone https://github.com/IDEOorg/text-a-coach-api.git
 cd text-a-coach-api
 bundle install
-rake db:setup
+bundle exec rake db:setup
 ```
 
 **Environment Variables**
 
 The environment file contains all the keys and passwords that this backend needs to connect to the other services. Copy `/.env.example` into your project as `/.env` and change the values to your keys. 
 
-#### Twilio
+#### Enabling Automatic Responses
 
-We use [Twilio](https://www.twilio.com) to send and receive SMS messages. Visit their website to:
-
-- Create an account
-- Create a [new phone number](https://www.twilio.com/console/phone-numbers/search)
-
-
-#### Zendesk
-
-We use [Zendesk](https://zendesk.com) to be notified of new messages and respond. It's an interface coaches can use to manage the conversations. Visit their website and:
-
-- Create an account
-- Choose a custom domain (https://my-domain.zendesk.com)
-
-#### Smooch
-
-We use [Smooch](https://smooch.io/) as the glue between message sources, Zendesk and this backend. Visit their website to:
-
-- Create an account
-- Create a new App
-- Add the [Twilio SMS integration](https://app.smooch.io/integrations/twilio) and follow their steps for configuration
-- Add the [Zendesk integration](https://app.smooch.io/integrations/zendesk) and follow their steps for configuration
-
-#### Test it out
-
-Congratulations! At this stage you should be able to send an SMS to your Twilio phone number, which should automatically create a Zendesk support ticket.
-
-Replies to the Zendesk support ticket will be sent back as an SMS!
-
-#### Webhook
-
-You can add an optional webhook from Smooch to our API which will enable autoresponders. These were set up to send automated "welcome" and "after hours" text messgaes to our participants.
+You can add an optional webhook from Smooch to our API which will enable autoresponders. These were set up to send automated "welcome" and "after hours" text messages to our participants.
 
 For information on the specific responses you can see our webhook controller in: `app/controllers/api/v1/webhooks_controller.rb`
 
@@ -150,8 +143,11 @@ cd text-a-coach-api
 heroku local
 ```
 
-Your app will be running at http://localhost:3333/
+Your app will be running at http://localhost:3333
 
+Note that page is blank because this is the backend, but you can visit:
+The CMS at http://localhost:3333/admin
+Or try the API at http://localhost:3333/api/v1/conversations
 
 ### Hosting this Service
 
