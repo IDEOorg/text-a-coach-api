@@ -99,6 +99,18 @@ bundle exec rake db:setup
 
 The environment file contains all the keys and passwords that this backend needs to connect to the other services. Copy `/.env.example` into your project as `/.env` and change the values to your keys. 
 
+If you want to enbale auto-responders you'll need to get your Smooch Secret Key and include it in this file. The steps are:
+
+- Go to your Smooch App
+- Go to the Settings tab
+- Scroll down to **Secret Keys**
+- Create a new key and add the credentials to your `.env` file as:
+```
+SMOOCH_JWT_ID="key id goes here"
+SMOOCH_JWT_SECRET="secret goes here"
+```
+
+
 #### Enabling Automatic Responses
 
 You can add an optional webhook from Smooch to our API which will enable autoresponders. These were set up to send automated "welcome" and "after hours" text messages to our participants.
@@ -121,16 +133,7 @@ SMOOCH_WEBHOOK_SECRET="secret goes here"
 
 In order to test the autoresponders in different circumstances, we needed a way to reset our conversation history. We do this through Smooch's [REST API](https://docs.smooch.io/rest/#delete-user-profile) when we receive a message with the special code: `resetmyhistory`
 
-To enable this reset functionality, you'll need credentials for the API:
-
-- Go to your Smooch App
-- Go to the Settings tab
-- Scroll down to **Secret Keys**
-- Create a new key and add the credentials to your `.env` file as:
-```
-SMOOCH_JWT_ID="key id goes here"
-SMOOCH_JWT_SECRET="secret goes here"
-```
+Remember to include your Smooch secret key in your environment file. Instructions on where to find it are above. 
 
 ### Local Server
 
